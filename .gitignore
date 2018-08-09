@@ -1,3 +1,3 @@
 #compilation-only files not needed for source
-*.h.gch 
+*.h.gch
 *.o
