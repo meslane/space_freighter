@@ -1,5 +1,7 @@
 #include "defs.h"
+#include "big_generator.h"
 
-int32_t main(int argc, char *argv[]) {
+int main(int argc, char *argv[]) {
+    linktest();
     return 0;
 }

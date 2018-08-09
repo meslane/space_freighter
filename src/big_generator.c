@@ -9,3 +9,7 @@ for the whole game. Generation order is as follows:
 -planets
 -economies
 */
+
+void linktest(void){
+    printf("test\n");
+}
