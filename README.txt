@@ -127,10 +127,19 @@ Type:
     -Traditional (no supreme god)
     -Henotheistic (yes supreme god)
     -Kathenotheistic (gods take turns being supreme)
+    -Deistic (gods don't give a shit about you)
 -Animistic (everything has a spirit)
 -Pantheistic (the universe is god) 
 -Autotheistic (everyone can become god)
 
-Religions also have a VIOLENCE factor based in part on random chance and in part
-on which type of religion they are. For example, mistheistic religions are more
-likely to be more violent than eutheistic ones, and so on. 
+Religions also have a VIOLENCE factoron a scale of 1 to 10 based in part on 
+random chance and in part on which type of religion they are. For example, 
+mistheistic religions are more likely to be more violent than eutheistic ones, 
+and so on.
+
+╔════════════════════╗
+║Naming Languages    ║
+╚════════════════════╝
+
+
+
