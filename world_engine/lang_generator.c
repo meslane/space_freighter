@@ -35,10 +35,16 @@ void generatelang(char *filename) {
     };
     
     char i; /* loop variable */
-	
-    /* make consonant inventory */
+    
     int consize = sizeof(consonants) / sizeof(consonants[0]);
-    char *cons_inv[consize]; 
+    char *cons_inv[consize]; /* array for writing consonants to file */
+    
+    char *vowel_inv[5]; /* array for writing vowels to file */
+    
+    char onset = (rand() % 2) + 1; /* number of consonants in onset */
+    char coda; /* number of consonants in coda */
+    
+    /* make consonant inventory */
     for (i = 0; i < consize; i++) { /* go through each array element */
         if ((rand() % 100) <= consprobs[i]) {
             fputs(consonants[i], f);
@@ -51,7 +57,7 @@ void generatelang(char *filename) {
     printf("\n");
 
     /* make vowel inventory */
-    char *vowel_inv[5];
+    
     for (i = 0; i < 5; i++) {
         if ((rand() % 100) <= vowelprobs[i]) {
             fputs(vowels[i], f);
@@ -64,8 +70,6 @@ void generatelang(char *filename) {
     printf("\n"); 
     
     /* get syllable structure */
-    char onset = (rand() % 2) + 1; /* number of consonants in onset */
-    char coda; /* number of consonants in coda */
     if (onset == 2) {
         coda = 1; /* if two are in onset, one must be in coda */
     }
@@ -83,38 +87,41 @@ void generatelang(char *filename) {
     for (i = coda; i != 0; i--) {
         printf("C");
     }
+    
+    fclose(f);
 }
 
-int generateword(char *filename) { /* BROKEN */
+int generateword(char *filename) { /*  TODO; malloc into array of strings */
     FILE *f = fopen(filename, "r"); 
+    
+    int c;
+    
+    int cl = 0;
+    int vl = 0;
+    
     if (f == NULL) {
         printf("File not found");
         return 1;
     }
     
-    char c;
-    
-    int cl = 0;
-    int vl = 0;
-    
-    for(;;) {
-        c = fgetc(f);
-        printf("%i\n", c);
-        if (c == EOF || c == '\n') {
+    while((c = fgetc(f)) != EOF) {
+        if (c == '\n') {
             break;
         }
-        cl++;
+        ++cl;
     }
     
-    for(;;) {
-        c = fgetc(f);
-        if (c == EOF || c == '\n') {
+    while((c = fgetc(f)) != EOF) {
+        if (c == '\n') {
             break;
         }
-        vl++;
+        ++vl;
     }
     
     printf("\n%i %i", cl, vl);
+    
+    fclose(f);
+    
     return 0;
 }
 
