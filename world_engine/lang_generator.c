@@ -5,11 +5,11 @@
 #include <math.h>
 #include <time.h>
 
-int rng(int min, int max) {
+int rng(const int min, const int max) {
     return (rand() % (max + 1 - min)) + min;
 }
 
-int generatelang(char *filename) {
+int generatelang(const char *filename) {
     FILE *f = fopen(filename, "wb"); /* binary write to file */
     
     char *vowels[] = {
@@ -40,8 +40,8 @@ int generatelang(char *filename) {
     
     char i; 
     
-    int consize = sizeof(consonants) / sizeof(consonants[0]); 
-    int vsize = sizeof(vowels) / sizeof(vowels[0]);
+    const int consize = sizeof(consonants) / sizeof(consonants[0]); 
+    const int vsize = sizeof(vowels) / sizeof(vowels[0]);
     
     char *cons_inv[consize]; 
     
@@ -51,62 +51,48 @@ int generatelang(char *filename) {
     char coda; 
     
     if (f == NULL) {
-        printf("File not found");
         return 1;
     }
     
     /* make consonant inventory */
     for (i = 0; i < consize; i++) { /* go through each array element */
-        if (rng(1, 100) <= consprobs[i]) {
+        if (rng(1, 100) <= consprobs[i]) { /* include phoneme if weighted rng result <= its probability value */
             fputs(consonants[i], f);
             fputc('\0', f); /* null-terminate each string */
-            printf("%s ", consonants[i]);
         }
     }
     
     fputc('\n', f);
-    printf("\n");
 
     /* make vowel inventory */
-    
     for (i = 0; i < vsize; i++) {
-        if ((rand() % 100) <= vowelprobs[i]) {
+        if (rng(1, 100) <= vowelprobs[i]) {
             fputs(vowels[i], f);
             fputc('\0', f); 
-            printf("%s ", vowels[i]);
         }  
     }
     
-    fputc('\n', f);
-    printf("\n"); 
+    fputc('\n', f); 
     
     /* get syllable structure */
     onset = rng(1, 2);
+    
     if (onset == 2) {
         coda = 1; /* if two are in onset, one must be in coda */
     }
     else {
         coda = rng(0, 1); 
     }
+    
     fputc(onset, f);
     fputc(coda, f);
-    
-    /* print syllable structure */
-    for (i = onset; i != 0; i--) {
-        printf("C");
-    }
-    printf("V");
-    for (i = coda; i != 0; i--) {
-        printf("C");
-    }
-    printf("\n");
     
     fclose(f);
     
     return 0;
 }
 
-char *generateword(char *filename, char sylnum) {
+char *generateword(const char *filename, char sylnum) {
     FILE *f = fopen(filename, "rb"); 
     
     char c; 
@@ -125,8 +111,11 @@ char *generateword(char *filename, char sylnum) {
     
     int i; 
     
-    char w = 0; /* word length */
     static char word[256]; 
+    
+    if (f == NULL) {
+        return NULL;
+    }
     
     while((c = fgetc(f)) != EOF) { /* put consonants into array */
         if (c == '\n') {
@@ -169,26 +158,23 @@ char *generateword(char *filename, char sylnum) {
     
     word[0] = '\0';
     
-    while(w < sylnum) { /* make word */
+    while(sylnum > 0) { /* make word */
         for (i = 1; i <= rng(0, onset); i++) { 
             strcat(word, cons[rng(0, cl - 1)]); 
         }
         
         strcat(word, vowels[rng(0, vl - 1)]);
-
+        
         for (i = 1; i <= rng(0, coda); i++) { 
             strcat(word, cons[rng(0, cl - 1)]); 
         }
-        w++;
+        sylnum--;
     } 
     
-    /* free allocated memory and close file */
-    fclose(f);
-    
+    /* free allocated memory and close file */ 
     for (i = 0; i < cl; i++) { 
         free(cons[i]);
     }
-    
     for (i = 0; i < vl; i++) {
         free(vowels[i]);
     }
@@ -196,12 +182,15 @@ char *generateword(char *filename, char sylnum) {
     free(cons);
     free(vowels);
     
+    fclose(f);
+    
     return word;
 }
 
 int main(int argc, char *argv[]) {
     long a = atoi(argv[1]);
     char i;
+    
     if (a == 0) {
         srand(time(0));
     }
