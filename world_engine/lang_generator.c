@@ -1,13 +1,5 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdint.h>
-#include <string.h>
-#include <math.h>
-#include <time.h>
-
-int rng(const int min, const int max) {
-    return (rand() % (max + 1 - min)) + min;
-}
+#include "defs.h"
+#include "rng.h"
 
 int generatelang(const char *filename) {
     FILE *f = fopen(filename, "wb"); /* binary write to file */
@@ -38,14 +30,10 @@ int generatelang(const char *filename) {
         84, 66, 88
     };
     
-    char i; 
+    unsigned char i; 
     
     const int consize = sizeof(consonants) / sizeof(consonants[0]); 
     const int vsize = sizeof(vowels) / sizeof(vowels[0]);
-    
-    char *cons_inv[consize]; 
-    
-    char *vowel_inv[vsize]; 
     
     char onset; 
     char coda; 
@@ -100,7 +88,7 @@ char *generateword(const char *filename, char sylnum) {
     int cl = 0; /* number of consonants/vowels */
     int vl = 0;
     
-    char s = 0; /* string length */
+    unsigned char s = 0; /* string length */
     char stemp[3]; /* temporary array for fetching strings, no sequence of graphemes is longer than 2 + \0 */
     
     char **cons = NULL; /* arrays for storing vowels and consonants */
@@ -187,6 +175,7 @@ char *generateword(const char *filename, char sylnum) {
     return word;
 }
 
+/*
 int main(int argc, char *argv[]) {
     long a = atoi(argv[1]);
     char i;
@@ -206,3 +195,4 @@ int main(int argc, char *argv[]) {
     
     return 0;
 }
+*/

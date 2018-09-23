@@ -1,8 +1,5 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdint.h>
-#include <string.h>
-#include <math.h>
+#include "defs.h"
+#include "rng.h"
 
 typedef struct {
     unsigned char r, g, b; 
@@ -173,8 +170,10 @@ void generateterrain(int x_size, int y_size, int sep, int sea_level) {
 	}	
 }
 
+/*
 int main(int argc, char *argv[]){
     srand(atoi(argv[4]));
 	generateterrain(atoi(argv[1]), atoi(argv[2]), atoi(argv[3]), 1);
     return 0;
 }
+*/
